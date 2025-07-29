@@ -7,7 +7,7 @@ pipeline {
     // Các biến môi trường sẽ được sử dụng trong pipeline
     environment {
         // Tên image Docker của bạn
-        DOCKER_IMAGE_NAME = 'ecommrce'
+        DOCKER_IMAGE_NAME = 'ecommerce'
         // Cổng trên máy chủ host mà bạn muốn ánh xạ tới cổng 8080 của container
         HOST_PORT = '9000'
         // Cổng mà ứng dụng ASP.NET Core lắng nghe bên trong container
