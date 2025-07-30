@@ -46,7 +46,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo '===> Deploying the app...'
-                // Nếu bạn đang dùng Linux, thay xcopy bằng cp -r
                 sh 'mkdir -p /var/www/myapp'
                 sh 'cp -r $PUBLISH_DIR/* /var/www/myapp/'
             }
@@ -59,10 +58,13 @@ pipeline {
             echo '===> Sending webhook notification...'
             script {
                 def payload = '{"status":"success","project":"my-dotnet-app","time":"' + new Date().toString() + '"}'
-                httpRequest httpMode: 'POST',
-                            url: "${env.WEBHOOK_URL}",
-                            requestBody: payload,
-                            contentType: 'APPLICATION_JSON'
+                httpRequest(
+                    httpMode: 'POST',
+                    url: "${env.WEBHOOK_URL}",
+                    contentType: 'APPLICATION_JSON',
+                    requestBody: payload,
+                    validResponseCodes: '100:499'
+                )
             }
         }
         failure {
