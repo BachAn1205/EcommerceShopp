@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '===> Cloning source code from Git...'
-                git 'https://github.com/BachAn1205/EcommerceShopp.git'
+                    git branch: 'main', url: 'https://github.com/BachAn1205/EcommerceShopp.git'
             }
         }
 
