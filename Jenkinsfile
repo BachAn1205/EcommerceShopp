@@ -4,49 +4,51 @@ pipeline {
     environment {
         CONFIGURATION = 'Release'
         PUBLISH_DIR = 'publish'
-        WEBHOOK_URL = 'https://3d190d3926f5.ngrok-free.app/github-webhook/' // Thay bằng URL thật
+        WEBHOOK_URL = 'https://3d190d3926f5.ngrok-free.app/github-webhook/'
     }
 
     stages {
         stage('Checkout') {
             steps {
                 echo '===> Cloning source code from Git...'
-                    git branch: 'main', url: 'https://github.com/BachAn1205/EcommerceShopp.git'
+                git branch: 'main', url: 'https://github.com/BachAn1205/EcommerceShopp.git'
             }
         }
 
         stage('Restore') {
             steps {
                 echo '===> Restoring NuGet packages...'
-                bat 'dotnet restore'
+                sh 'dotnet restore'
             }
         }
 
         stage('Build') {
             steps {
                 echo '===> Building the project...'
-                bat "dotnet build --configuration %CONFIGURATION%"
+                sh 'dotnet build --configuration $CONFIGURATION'
             }
         }
 
         stage('Test') {
             steps {
                 echo '===> Running unit tests...'
-                bat "dotnet test --no-build --verbosity normal"
+                sh 'dotnet test --no-build --verbosity normal'
             }
         }
 
         stage('Publish') {
             steps {
                 echo '===> Publishing the app...'
-                bat "dotnet publish --configuration %CONFIGURATION% --output %PUBLISH_DIR%"
+                sh 'dotnet publish --configuration $CONFIGURATION --output $PUBLISH_DIR'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo '===> Deploying the app...'
-                bat "xcopy /E /Y %PUBLISH_DIR% C:\\deploy\\myapp\\"
+                // Nếu bạn đang dùng Linux, thay xcopy bằng cp -r
+                sh 'mkdir -p /var/www/myapp'
+                sh 'cp -r $PUBLISH_DIR/* /var/www/myapp/'
             }
         }
     }
