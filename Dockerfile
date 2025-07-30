@@ -1,4 +1,5 @@
-﻿# Use official ASP.NET Core runtime as base
+﻿USER root
+# Use official ASP.NET Core runtime as base
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
